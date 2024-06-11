@@ -1,5 +1,6 @@
 package br.com.movieapp
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,8 +14,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.movieapp.ui.theme.MovieAppTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val apiKey = BuildConfig.API_KEY
         setContent {
             MovieAppTheme {
                 Surface(
