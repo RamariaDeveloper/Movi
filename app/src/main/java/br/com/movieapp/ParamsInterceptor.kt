@@ -1,6 +1,6 @@
 package br.com.movieapp
 
-import br.com.movieapp.core.utils.Constants
+import br.com.movieapp.framework.utils.Constants
 import okhttp3.Interceptor
 import okhttp3.Response
 
