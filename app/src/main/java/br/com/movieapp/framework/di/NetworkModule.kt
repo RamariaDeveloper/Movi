@@ -2,12 +2,15 @@ package br.com.movieapp.framework.di
 
 import br.com.movieapp.BuildConfig
 import br.com.movieapp.ParamsInterceptor
+import br.com.movieapp.remote.MovieService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 @Module
@@ -20,6 +23,7 @@ object NetworkModule {
         return ParamsInterceptor()
     }
 
+    @Provides
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().apply {
             level = getLoggingInterceptorLevel()
@@ -34,6 +38,7 @@ object NetworkModule {
         }
     }
 
+    @Provides
     fun provideOkHttpClient(
         paramsInterceptor: ParamsInterceptor,
         loggingInterceptor: HttpLoggingInterceptor
@@ -44,6 +49,23 @@ object NetworkModule {
             .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .build()
+    }
+
+    @Provides
+    fun provideGsonConverterFactory(): GsonConverterFactory {
+        return GsonConverterFactory.create()
+    }
+
+    fun provideMovieService(
+        client: OkHttpClient,
+        converterFactory: GsonConverterFactory
+    ): MovieService {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .client(client)
+            .addConverterFactory(converterFactory)
+            .build()
+            .create(MovieService::class.java)
     }
 
 }
