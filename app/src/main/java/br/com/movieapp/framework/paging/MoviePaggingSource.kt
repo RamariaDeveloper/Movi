@@ -11,7 +11,10 @@ class MoviePaggingSource(
     private val remoteDataSource: MoviePopularRemoteDataSource
 ) : PagingSource<Int, Movie>() {
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
-        TODO("Not yet implemented")
+        return state.anchorPosition?.let { anchorPosition ->
+            val anchorPage = state.closestPageToPosition(anchorPosition)
+            anchorPage?.prevKey?.plus(LIMIT) ?: anchorPage?.nextKey?.minus(LIMIT)
+        }
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
@@ -29,5 +32,9 @@ class MoviePaggingSource(
             exception.printStackTrace()
             return LoadResult.Error(exception)
         }
+    }
+
+    companion object {
+        private const val LIMIT = 20
     }
 }
