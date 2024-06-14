@@ -8,8 +8,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import br.com.movieapp.features.popular.domain.usecase.GetPopularMoviesUseCase
 import br.com.movieapp.features.popular.presentation.state.MoviePopularState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+@HiltViewModel
 class MoviePopularViewModel @Inject constructor(
     getPopularMoviesUseCase: GetPopularMoviesUseCase
 ) : ViewModel() {
