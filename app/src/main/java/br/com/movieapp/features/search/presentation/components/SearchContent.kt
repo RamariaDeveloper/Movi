@@ -91,6 +91,7 @@ fun SearchContent(
                             LoadingView()
                         }
                     }
+
                     loadState.append is LoadState.Loading -> {
                         isLoading = false
                         item(span = {
